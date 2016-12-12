@@ -1,4 +1,4 @@
-from flask import Flask, render_template, make_response, redirect
+from flask import Flask, render_template, make_response, redirect, send_from_directory
 from flask.ext.restful import Api, Resource, reqparse, abort
 
 import json
@@ -182,6 +182,9 @@ api.add_resource(HelpRequestAsJSON, '/request/<string:helprequest_id>.json')
 def index():
     return redirect(api.url_for(EquipmentList), code=303)
 
+@app.route('/styles/<path:path>')
+def send_style(path):
+    return send_from_directory('styles', path)
 
 # This is needed to load JSON from Javascript running in the browser.
 @app.after_request
