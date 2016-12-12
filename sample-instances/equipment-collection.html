@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <title>Checkout Equipment</title>
+</head>
+<body>
+
+<nav>
+    <ul>
+        <li><a href="calendar.html" rel="related">Reservation Calendar</a></li>
+        <li><a href="equipment-collection.html" rel="self">All Equipment</a></li>
+    </ul>
+</nav>
+
+<section>
+<h1>SILS Checkout Equipment</h1>
+<!-- The equipment collection needs:
+     - List of links to equipment
+     - Form to add new equipment
+-->
+
+<h2>Equipment List</h2>
+<form class="search" method="get">
+    <input name="query" type="text">
+    <input type="submit" value="Search Equipment">
+</form>
+<!-- The real version would filter this list based on the query parameter,
+     if one exists.
+ -->
+<ul>
+    <li class="equipment"><a href="equipment.html" rel="item">Item #1</a></li>
+    <li class="equipment"><a href="equipment.html" rel="item">Item #2</a></li>
+</ul>
+
+<h2>Add New Equipment</h2>
+<form class="edit_equipment" method="post">
+    <label>Item Name: <input name="name" type="text" required></label><br>
+    <label>Barcode: <input name="name" type="number" required></label><br>
+    <label>Replacement Cost: <input name="cost" type="number" step="0.01" min="0"></label><br>
+    <label>Description:<br><textarea name="description"></textarea></label><br>
+    <input type="submit" value="Add Item">
+</form>
+</section>
+
+</body>
+</html>

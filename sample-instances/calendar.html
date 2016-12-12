@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <title>Reservation Calendar</title>
+</head>
+<body>
+
+<nav>
+    <ul>
+        <li><a href="calendar.html" rel="self">Reservation Calendar</a></li>
+        <li><a href="equipment-collection.html" rel="related">All Equipment</a></li>
+    </ul>
+</nav>
+
+<section>
+<h1>SILS Equipment Reservation Calendar</h1>
+<!-- The calendar needs:
+     - List of reservations
+     - Form to add new reservation
+-->
+
+<h2>Reservations</h2>
+<form class="search" method="get">
+    <p>Enter an item and/or a date to search for existing reservations, or view the full list below.</p>
+    <label>Item (name or barcode): <input name="search_item" type="text"></label>
+    <label>Date: <input name="search_date" type="date"></label><br>
+    <input type="submit" value="Search Reservations">
+</form>
+<!-- The actual implementation would filter this list based on the search_item
+     and search_date parameters, if they're present.
+ -->
+<ul>
+    <li class="reservation"><a href="reservation.html" rel="item">Reservation #1</a></li>
+    <li class="reservation"><a href="reservation.html" rel="item">Reservation #2</a></li>
+</ul>
+
+<h2>Add a New Reservation</h2>
+<form class="edit_reservation" action="calendar.html" method="post">
+    <label>Item: <select name="item">
+        <option value="10003156789">Google Cardboard</option>
+        <option value="0">Something Else</option>
+    </select></label><br>
+    <label>Start Date: <input name="start" type="date" required></label><br>
+    <label>End Date: <input name="end" type="date"></label><br>
+    <input type="submit" value="Please may I have it?">
+</form>
+</section>
+
+</body>
+</html>

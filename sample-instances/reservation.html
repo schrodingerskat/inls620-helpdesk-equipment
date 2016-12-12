@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <title>Sample Reservation</title>
+</head>
+<body>
+
+<nav>
+    <ul>
+        <li><a href="calendar.html" rel="collection">Reservation Calendar</a></li>
+        <li><a href="equipment-collection.html" rel="related">All Equipment</a></li>
+    </ul>
+</nav>
+
+<section>
+<h1>Google Cardboard Reservation</h1>
+<!-- A reservation needs:
+     - Start Date
+     - End Date
+     - Link to Item
+ -->
+<form class="edit_reservation"  method="put">
+    <label>Item: <a href="equipment.html" rel="reservedItem">Google Cardboard</a><input name="item" type="hidden" value="10003156789"></label><br>
+    <label>Start Date: <input name="start" type="date" value="2016-11-09" required></label><br>
+    <label>End Date: <input name="end" type="date" value="2016-11-11"></label><br>
+    <input class="edit" type="submit" value="Please may I have it?">
+</form>
+
+<p><a href="calendar.html" rel="collection">View All Reservations</a></p>
+</section>
+
+</body>
+</html>
