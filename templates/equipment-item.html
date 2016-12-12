@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <title>Sample Equipment</title>
+    <link rel="stylesheet" href="/styles/style.css">
+</head>
+<body>
+
+<nav>
+    <ul>
+        <li><a href="/equipment" rel="collection">Equipment Collection</a></li>
+        <li><a href="calendar.html" rel="related">Reservation Calendar</a></li>
+    </ul>
+</nav>
+
+<main>
+<h1>{{ item.name }}</h1>
+<!-- An equipment record needs:
+     - Library information (barcode, name, replacement cost)
+     - List of kit accessories
+     - Link to reservations for that item
+     - Form to add a new reservation
+-->
+<form class="edit_equipment" method="put">
+    <p><label>Barcode: {{ item.barcode }}</label></p>
+    <p><label>Replacement Cost: {{ item.replacementCost[0].price }}</label></p>
+    <p><label>Description: <br><textarea name="description" rows="3" cols="50">{{ item.description }}</textarea></label></p>
+    <p><label>Kit Contents:
+        <ul style="list-style:none;">
+            {% for accessory in item.accessories %}
+            <li><input name="accessories[]" type="text" value="{{ accessory }}" size="40"></input></li>
+            {% endfor %}
+            <li><input name="accessories[]" type="text" placeholder="Add New Accessory" size="40"></input></li>
+        </ul>
+    </label></p>
+    <input class="edit" type="submit" value="Update Equipment">
+</form>
+
+<h2>Reserve This Item</h2>
+<form class="edit_reservation" action="/reservations" method="post">
+    <input name="item" type="hidden" value="{{ item.barcode }}">
+    <p><label>Start Date: <input name="start" type="date" required></label></p>
+    <p><label>End Date: <input name="end" type="date"></label></p>
+    <p><input type="submit" value="Please may I have it?"></p>
+</form>
+
+<p><a href="/calendar?search_item={{ item.barcode }}" rel="reserve">View Reservations</a></p>
+</main>
+
+</body>
+</html>
