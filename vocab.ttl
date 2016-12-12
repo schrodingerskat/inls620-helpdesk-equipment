@@ -1,0 +1,12 @@
+@base <url-here/vocab.ttl#> .
+@schema <https://schema.org/> .
+
+<EquipmentItem>
+    a rdf:Class ;
+    rdfs:label "Equipment Item"@en ;
+    rdfs:subClassOf schema:IndividualProduct .
+
+<EquipmentReservation>
+    a rdf:Class ;
+    rdfs:label "Equipment Reservation"@en ;
+    rdfs:subClassOf schema:Reservation .

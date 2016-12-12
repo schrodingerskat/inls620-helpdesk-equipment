@@ -1,0 +1,56 @@
+{
+    "@context": {
+        "helpdesk": "url-here/vocab.ttl#",
+        "equipment":
+        { "@id": "https://www.w3.org/2000/01/rdf-schema#member",
+          "@container": "@index"
+        },
+        "reservations":
+        { "@id": "https://www.w3.org/2000/01/rdf-schema#member",
+          "@container": "@index"
+        },
+        "barcode": "https://schema.org/serialNumber",
+        "replacementCost": {
+            "@id": "https://schema.org/offers",
+            "@type": "https://schema.org/Offer"
+        },
+        "price": {
+            "@id": "https://schema.org/price",
+            "@type": "https://www.w3.org/2001/XMLSchema#float"
+        },
+        "requestedBy": "https://www.schema.org/underName",
+        "requestedItem": "https://www.schema.org/reservationFor"
+    },
+    "@id": "equipment-reservations",
+    "equipment": {
+        "f093a8": {
+            "@type": "helpdesk:EquipmentItem",
+            "@id": "equipment/f093a8",
+            "name": "Google Cardboard",
+            "barcode": "10003156789",
+            "replacementCost": [ {"price": "14.95"}],
+            "description": "A cardboard box to put your phone in.",
+            "contents": [ "Google Cardboard Headset", "3D-printed Nose Support"]
+        },
+        "on310d": {
+            "@type": "helpdesk:EquipmentItem",
+            "@id": "equipment/on310d",
+            "name": "Canon Vixia",
+            "barcode": "10003159876",
+            "replacementCost": [{ "price": "2000.00" }],
+            "description": "A nice video camera.",
+            "contents": [ "Canon Vixia Camcorder", "SD Card", "USB Cable"]
+        }
+    },
+    "reservations": {
+        "9a0elq": {
+            "@type": "https://www.schema.org/Reservation",
+            "@id": "reservation/9a0elq",
+            "requestedBy": "Katherine",
+            "requestedItem": "10003156789",
+            "modifiedTime": "2016-11-12T13:14:15",
+            "startDate": "2016-11-14",
+            "endDate": "2016-11-19"
+        }
+    }
+}
