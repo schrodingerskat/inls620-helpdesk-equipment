@@ -30,7 +30,7 @@
             "barcode": "10003156789",
             "replacementCost": [ {"price": "14.95"}],
             "description": "A cardboard box to put your phone in.",
-            "contents": [ "Google Cardboard Headset", "3D-printed Nose Support"]
+            "accessories": [ "Google Cardboard Headset", "3D-printed Nose Support"]
         },
         "on310d": {
             "@type": "helpdesk:EquipmentItem",
@@ -39,7 +39,7 @@
             "barcode": "10003159876",
             "replacementCost": [{ "price": "2000.00" }],
             "description": "A nice video camera.",
-            "contents": [ "Canon Vixia Camcorder", "SD Card", "USB Cable"]
+            "accessories": [ "Canon Vixia Camcorder", "SD Card", "USB Cable"]
         }
     },
     "reservations": {

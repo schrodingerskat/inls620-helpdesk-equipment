@@ -55,11 +55,10 @@ def filter_and_sort_equipment(query='', sort_by='time'):
 # Given the data for a help request, generate an HTML representation
 # of that help request.
 # TODO: Edit for my application
-def render_helprequest_as_html(helprequest):
+def render_equipitem_as_html(equipment_record):
     return render_template(
-        'helprequest+microdata+rdfa.html',
-        helprequest=helprequest,
-        priorities=reversed(list(enumerate(PRIORITIES))))
+        'equipment-item.html',
+        item=equipment_record)
 
 
 # Given the data for a list of help requests, generate an HTML representation
