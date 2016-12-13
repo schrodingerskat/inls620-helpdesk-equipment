@@ -7,9 +7,16 @@ from flask import Flask, render_template, make_response, redirect, send_from_dir
 from flask.ext.restful import Api, Resource, reqparse, abort
 
 
-
+# Converts a date string into a date object
 def date(s):
     return datetime.strptime(s, "%Y-%m-%d").date()
+
+# Raises an error if the string x is empty (has zero length).
+def nonempty_string(x):
+    if len(x) == 0:
+        raise ValueError('string is empty')
+    return str(x)
+
 
 # Load data from JSON "database"
 with open('data.jsonld') as data:
@@ -41,24 +48,26 @@ def error_if_reservation_not_found(reservation_id):
 
 # Filter and sort a list of helprequests.
 # TODO: edit for my application
-def filter_and_sort_equipment(query='', sort_by='time'):
+def filter_and_sort_equipment(query='', sort_by='name'):
 
-    # Returns True if the query string appears in the help request's
-    # title or description.
+    # Returns True if the query string appears in the item's
+    # name or description
     def matches_query(item):
-        (helprequest_id, helprequest) = item
-        text = helprequest['title'] + helprequest['description']
-        return query.lower() in text
+        (equipment_id, equipment_record) = item
+        text = equipment_record['name'] + equipment_record['description']
+        return query.lower() in text.lower()
 
-    # Returns the help request's value for the sort property (which by
-    # default is the "time" property).
+    # Returns the equipment item's value for the sort property (which by
+    # default is the "name" property).
     def get_sort_value(item):
-        (helprequest_id, helprequest) = item
-        return helprequest[sort_by]
+        (equipment_id, equipment_record) = item
+        if sort_by == 'replacementCost':
+            return equipment_record['replacementCost'][0]['price']
+        return equipment_record[sort_by]
 
-    filtered_helprequests = filter(matches_query, data['helprequests'].items())
+    filtered_equipment = filter(matches_query, data['equipment'].items())
 
-    return sorted(filtered_helprequests, key=get_sort_value, reverse=True)
+    return sorted(filtered_equipment, key=get_sort_value)
 
 
 # Given the data for an equipment record, generate an HTML representation.
@@ -90,13 +99,6 @@ def render_equipment_list_as_html(equipment):
     return render_template(
         'equipment-list.html',
         equipment=equipment)
-
-
-# Raises an error if the string x is empty (has zero length).
-def nonempty_string(x):
-    if len(x) == 0:
-        raise ValueError('string is empty')
-    return str(x)
 
 
 ###########################################################
@@ -164,14 +166,23 @@ class HelpRequestAsJSON(Resource):
         return helprequest
 
 
+# Specify the parameters for filtering and sorting help requests.
+# See `filter_and_sort_helprequests` above.
+equipment_query_parser = reqparse.RequestParser()
+equipment_query_parser.add_argument(
+    'query', type=str, default='')
+equipment_query_parser.add_argument(
+    'sort_by', type=str, choices=('name', 'replacementCost'), default='name')
+
 # Define our help request list resource.
 class EquipmentList(Resource):
     # Respond with an HTML representation of the help request list, after
     # applying any filtering and sorting parameters.
     def get(self):
+        query = equipment_query_parser.parse_args()
         return make_response(
             render_equipment_list_as_html(
-                data['equipment']), 200)
+                filter_and_sort_equipment(**query)), 200)
 
     # Add a new help request to the list, and respond with an HTML
     # representation of the updated list.

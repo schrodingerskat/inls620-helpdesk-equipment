@@ -29,18 +29,18 @@
      if one exists.
  -->
 <ul>
-    {% for item_id, item in equipment.items() %}
+    {% for item_id, item in equipment %}
     <li class="equipment"><a href="{{ url_for('equipmentitem', equipment_id=item_id) }}" rel="item">{{ item.name }}</a></li>
     {% endfor %}
 </ul>
 
 <h2>Add New Equipment</h2>
 <form class="edit_equipment" method="post">
-    <label>Item Name: <input name="name" type="text" required></label><br>
-    <label>Barcode: <input name="barcode" type="number" required></label><br>
-    <label>Replacement Cost: <input name="replacementCost" type="number" step="0.01" min="0"></label><br>
-    <label>Description:<br><textarea name="description"></textarea></label><br>
-    <input type="submit" value="Add Item">
+    <p><label>Item Name:</label> <input name="name" type="text" required></p>
+    <p><label>Barcode:</label> <input name="barcode" type="number" required></p>
+    <p><label>Replacement Cost:</label> <input name="replacementCost" type="number" step="0.01" min="0" placeholder="0.00"></p>
+    <p><label>Description:</label> <br><textarea name="description"></textarea></p>
+    <p><input type="submit" value="Add Item"></p>
 </form>
 </main>
 

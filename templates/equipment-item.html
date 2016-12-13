@@ -22,18 +22,24 @@
      - Form to add a new reservation
 -->
 <form class="edit_equipment" method="patch">
-    <p><label>Barcode: {{ item.barcode }}</label></p>
-    <p><label>Replacement Cost: {{ item.replacementCost[0].price }}</label></p>
-    <p><label>Description: <br><textarea name="description" rows="3" cols="50">{{ item.description }}</textarea></label></p>
-    <p><label>Kit Contents:
+    <p><label>Barcode:</label>
+        <span>{{ item.barcode }}</span>
+    </p>
+    <p><label>Replacement Cost:</label>
+        <span>{{ item.replacementCost[0].price }}</span>
+    </p>
+    <p><label>Description:</label><br>
+        <textarea name="description" rows="3">{{ item.description }}</textarea>
+    </p>
+    <p><label>Kit Contents:</label>
         <ul style="list-style:none;">
             {% for accessory in item.accessories %}
             <li><input name="accessories" type="text" value="{{ accessory }}" size="40"></input></li>
             {% endfor %}
             <li><input name="accessories" type="text" placeholder="Add New Accessory" size="40"></input></li>
         </ul>
-    </label></p>
-    <input class="edit" type="submit" value="Update Equipment">
+    </p>
+    <p><input class="edit" type="submit" value="Update Equipment"></p>
     <script>
     var form = document.querySelector('form.edit_equipment');
     var button = document.querySelector('form.edit_equipment input.edit');

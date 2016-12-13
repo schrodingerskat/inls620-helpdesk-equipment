@@ -28,6 +28,23 @@ main {
     margin: auto;
 }
 
+
+form {
+    min-width: 10em;
+    display: inline-block;
+}
 form p {
     margin: 0;
+    line-height: 1.6;
+}
+form label {
+    font-weight: bold;
+    padding-right: 0.5em;
+}
+label + input, label + select, label + span {
+    float: right;
+}
+textarea {
+    display:block;
+    width: 22.7em;
 }

@@ -40,14 +40,20 @@
 
 <h2>Add a New Reservation</h2>
 <form class="edit_reservation" method="post">
-    <p><label>Item: <select name="requestedItem">
+    <p><label>Item:</label> <select name="requestedItem">
         {% for item_id, item in equipment.items() %}
         <option value="{{ item_id }}"> {{ item.name }}</option>
         {% endfor %}
-    </select></label></p>
-    <p><label>Email: <input name="requestedBy" type="email" placeholder="email@example.com" required></label></p>
-    <p><label>Start Date: <input name="startDate" type="date" required></label></p>
-    <p><label>End Date: <input name="endDate" type="date" required></label></p>
+    </select></p>
+    <p><label>Email:</label>
+        <input name="requestedBy" type="email" placeholder="email@example.com" required>
+    </p>
+    <p><label>Start Date:</label>
+        <input name="startDate" type="date" required>
+    </p>
+    <p><label>End Date:</label>
+        <input name="endDate" type="date" required>
+    </p>
     <p><input type="submit" value="Request Reservation"></p>
 </form>
 </main>

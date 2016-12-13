@@ -22,10 +22,18 @@
      - Who reserved it
  -->
 <form class="edit_reservation"  method="patch">
-    <p><label>Item: <a href="/equipment/{{ reservation.requestedItem }}" rel="reservedItem">{{ item.name }}</a></label>
-    <p><label>Reserved for: {{ reservation.requestedBy }}</label></p>
-    <p><label>Start Date: <input name="startDate" type="date" value="{{ reservation.startDate }}" required></label></p>
-    <p><label>End Date: <input name="endDate" type="date" value="{{ reservation.endDate }}"></label></p>
+    <p><label>Item:</label>
+        <span><a href="/equipment/{{ reservation.requestedItem }}" rel="reservedItem">{{ item.name }}</a></span>
+    </p>
+    <p><label>Reserved for:</label>
+        <span>{{ reservation.requestedBy }}</span>
+    </p>
+    <p><label>Start Date:</label>
+        <input name="startDate" type="date" value="{{ reservation.startDate }}" required>
+    </p>
+    <p><label>End Date:</label>
+        <input name="endDate" type="date" value="{{ reservation.endDate }}">
+    </p>
     <p><input class="edit" type="submit" value="Update Reservation"></p>
     <script>
     var form = document.querySelector('form.edit_reservation');
