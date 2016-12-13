@@ -46,8 +46,8 @@
         "9a0elq": {
             "@type": "https://www.schema.org/Reservation",
             "@id": "reservation/9a0elq",
-            "requestedBy": "Katherine",
-            "requestedItem": "10003156789",
+            "requestedBy": "kshaw@email.unc.edu",
+            "requestedItem": "f093a8",
             "modifiedTime": "2016-11-12T13:14:15",
             "startDate": "2016-11-14",
             "endDate": "2016-11-19"

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <title>Equipment Reservation Calendar</title>
+    <link rel="stylesheet" href="styles/style.css">
+</head>
+<body>
+
+<nav>
+    <ul>
+        <li><a href="/equipment" rel="related">All Equipment</a></li>
+        <li><a href="/reservations" rel="self">Reservation Calendar</a></li>
+    </ul>
+</nav>
+
+<main>
+<h1>SILS Equipment Reservation Calendar</h1>
+<!-- The calendar needs:
+     - List of reservations
+     - Form to add new reservation
+-->
+
+<h2>Reservations</h2>
+<form class="search" method="get">
+    <p>Enter an item and/or a date to search for existing reservations, or view the full list below.</p>
+    <label>Item (name or barcode): <input name="search_item" type="text"></label>
+    <label>Date: <input name="search_date" type="date"></label><br>
+    <input type="submit" value="Search Reservations">
+</form>
+<!-- The actual implementation would filter this list based on the search_item
+     and search_date parameters, if they're present.
+ -->
+<ul>
+    {% for reservation_id, reservation in reservations.items() %}
+    <li class="reservation">
+        <a href="{{ url_for('reservation', reservation_id=reservation_id) }}"
+        rel="item">{{ reservation.startDate.strftime("%b %d, %Y") }}: {{ equipment[reservation.requestedItem].name }} ({{ reservation.requestedBy }})</a></li>
+    {% endfor %}
+</ul>
+
+<h2>Add a New Reservation</h2>
+<form class="edit_reservation" method="post">
+    <p><label>Item: <select name="requestedItem">
+        {% for item_id, item in equipment.items() %}
+        <option value="{{ item_id }}"> {{ item.name }}</option>
+        {% endfor %}
+    </select></label></p>
+    <p><label>Email: <input name="requestedBy" type="email" placeholder="email@example.com" required></label></p>
+    <p><label>Start Date: <input name="startDate" type="date" required></label></p>
+    <p><label>End Date: <input name="endDate" type="date" required></label></p>
+    <p><input type="submit" value="Request Reservation"></p>
+</form>
+</main>
+
+</body>
+</html>

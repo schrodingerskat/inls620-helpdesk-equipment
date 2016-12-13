@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <title>{{ item.name }} Reservation -- Checkout Equipment System</title>
+    <link rel="stylesheet" href="/styles/style.css">
+</head>
+<body>
+
+<nav>
+    <ul>
+        <li><a href="/equipment" rel="related">All Equipment</a></li>
+        <li><a href="/reservations" rel="collection">Reservation Calendar</a></li>
+    </ul>
+</nav>
+
+<main>
+<h1> {{ item.name }} Reservation: {{ reservation.startDate.strftime("%b %d, %Y") }}</h1>
+<!-- A reservation needs:
+     - Start Date
+     - End Date
+     - Link to Item
+     - Who reserved it
+ -->
+<form class="edit_reservation"  method="patch">
+    <p><label>Item: <a href="/equipment/{{ reservation.requestedItem }}" rel="reservedItem">{{ item.name }}</a></label>
+    <p><label>Reserved for: {{ reservation.requestedBy }}</label></p>
+    <p><label>Start Date: <input name="startDate" type="date" value="{{ reservation.startDate }}" required></label></p>
+    <p><label>End Date: <input name="endDate" type="date" value="{{ reservation.endDate }}"></label></p>
+    <p><input class="edit" type="submit" value="Update Reservation"></p>
+    <script>
+    var form = document.querySelector('form.edit_reservation');
+    var button = document.querySelector('form.edit_reservation input.edit');
+
+    button.addEventListener('click', function (event) {
+        event.preventDefault();
+        var request = new XMLHttpRequest();
+        request.open('PATCH', window.location.pathname);
+        request.onreadystatechange = function () {
+            if (XMLHttpRequest.DONE === request.readyState
+                && 200 === request.status) {
+                    window.location.reload(true);
+            }
+        }
+        request.send(new FormData(form));
+    }, false);
+    </script>
+</form>
+
+<p>Want to use this item? Create a new reservation through our <a href="/reservations" rel="collection">Reservation Calendar</a>.</p>
+</main>
+
+</body>
+</html>
