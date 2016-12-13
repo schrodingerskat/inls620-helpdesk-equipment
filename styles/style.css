@@ -51,7 +51,6 @@ textarea {
     display:block;
     width: 22.7em;
 }
-
 input + span, textarea + span, ul + span {
     display: none;
 }
