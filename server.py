@@ -9,7 +9,10 @@ from flask.ext.restful import Api, Resource, reqparse, abort
 
 # Converts a date string into a date object
 def date(s):
-    return datetime.strptime(s, "%Y-%m-%d").date()
+    if 'T' in s:
+        return datetime.strptime(s, "%Y-%m-%dT%H:%M:%S")
+    else:
+        return datetime.strptime(s, "%Y-%m-%d").date()
 
 # Raises an error if the string x is empty (has zero length).
 def nonempty_string(x):
@@ -22,7 +25,7 @@ def nonempty_string(x):
 with open('data.jsonld') as data:
     data = json.load(data)
     for reservation in data['reservations']:
-        for date_string in ['startDate', 'endDate']:
+        for date_string in ['startDate', 'endDate', 'modifiedTime']:
             data['reservations'][reservation][date_string] = \
                 date(data['reservations'][reservation][date_string])
 
@@ -46,8 +49,7 @@ def error_if_reservation_not_found(reservation_id):
         abort(404, message=message)
 
 
-# Filter and sort a list of helprequests.
-# TODO: edit for my application
+# Filter and sort a list of equipment.
 def filter_and_sort_equipment(query='', sort_by='name'):
 
     # Returns True if the query string appears in the item's
@@ -70,39 +72,42 @@ def filter_and_sort_equipment(query='', sort_by='name'):
     return sorted(filtered_equipment, key=get_sort_value)
 
 
-# Given the data for an equipment record, generate an HTML representation.
+###########################################################
+##                       RENDERING                       ##
+###########################################################
+
+# Generate an HTML representation of a given reservation.
+# Also requires the equipment record to display user-friendly details.
 def render_reservation_as_html(reservation_record, equipment_record):
     return render_template(
         'reservation.html',
         reservation=reservation_record,
         item=equipment_record)
 
-
-# Given the data for a list of equipment, generate an HTML representation
-# of that list.
+# Generate an HTML representation of a given list of reservations.
+# Also requires equipment records to display user-friendly details.
 def render_reservation_list_as_html(reservations, equipment):
     return render_template(
         'reservation-calendar.html',
         reservations=reservations,
         equipment=equipment)
 
-# Given the data for an equipment record, generate an HTML representation.
+# Generate an HTML representation of a given equipment record.
 def render_equipitem_as_html(equipment_record):
     return render_template(
         'equipment-item.html',
         item=equipment_record)
 
-
-# Given the data for a list of equipment, generate an HTML representation
-# of that list.
+# Generate an HTML representation of a given list of equipment.
 def render_equipment_list_as_html(equipment):
     return render_template(
         'equipment-list.html',
         equipment=equipment)
 
 
+
 ###########################################################
-##             Equipment : Individual Items              ##
+##                 EQUIPMENT : Parsers                   ##
 ###########################################################
 
 # Specify the data necessary to create a new item record.
@@ -119,7 +124,6 @@ new_equipitem_parser.add_argument(
     'description', type=str, default=''
 )
 
-
 # Specify the data necessary to update an existing item record.
 # Only the description and accessories can be updated.
 update_equipitem_parser = reqparse.RequestParser()
@@ -128,51 +132,17 @@ update_equipitem_parser.add_argument(
 update_equipitem_parser.add_argument(
     'description', type=str, default='')
 
-# Define our help request resource.
-class EquipmentItem(Resource):
-
-    # If an item record with the specified ID does not exist,
-    # respond with a 404, otherwise respond with an HTML representation.
-    def get(self, equipment_id):
-        error_if_item_not_found(equipment_id)
-        return make_response(
-            render_equipitem_as_html(
-                data['equipment'][equipment_id]), 200)
-
-    # If a help request with the specified ID does not exist,
-    # respond with a 404, otherwise update the help request and respond
-    # with the updated HTML representation.
-    def patch(self, equipment_id):
-        error_if_item_not_found(equipment_id)
-        equipment_record = data['equipment'][equipment_id]
-        update = update_equipitem_parser.parse_args()
-        equipment_record['description'] = update['description']
-        equipment_record['accessories'] = update['accessories']
-        return make_response(
-            render_equipitem_as_html(equipment_record), 200)
-
-
-
-
-# Define a resource for getting a JSON representation of a help request.
-class HelpRequestAsJSON(Resource):
-
-    # If a help request with the specified ID does not exist,
-    # respond with a 404, otherwise respond with a JSON representation.
-    def get(self, helprequest_id):
-        error_if_item_not_found(helprequest_id)
-        helprequest = data['helprequests'][helprequest_id]
-        helprequest['@context'] = data['@context']
-        return helprequest
-
-
-# Specify the parameters for filtering and sorting help requests.
-# See `filter_and_sort_helprequests` above.
+# Specify the parameters for filtering and sorting equipment records.
+# See `filter_and_sort_equipment` above.
 equipment_query_parser = reqparse.RequestParser()
 equipment_query_parser.add_argument(
     'query', type=str, default='')
 equipment_query_parser.add_argument(
     'sort_by', type=str, choices=('name', 'replacementCost'), default='name')
+
+###########################################################
+##                EQUIPMENT : Full List                  ##
+###########################################################
 
 # Define our help request list resource.
 class EquipmentList(Resource):
@@ -200,9 +170,52 @@ class EquipmentList(Resource):
 
 
 # Define a resource for getting a JSON representation of the help request list.
+# TODO
 class HelpRequestListAsJSON(Resource):
     def get(self):
         return data
+
+
+###########################################################
+##             EQUIPMENT : Individual Items              ##
+###########################################################
+
+# Define our equipment item resource.
+class EquipmentItem(Resource):
+
+    # If an item record with the specified ID does not exist,
+    # respond with a 404, otherwise respond with an HTML representation.
+    def get(self, equipment_id):
+        error_if_item_not_found(equipment_id)
+        return make_response(
+            render_equipitem_as_html(
+                data['equipment'][equipment_id]), 200)
+
+    # If a help request with the specified ID does not exist,
+    # respond with a 404, otherwise update the help request and respond
+    # with the updated HTML representation.
+    def patch(self, equipment_id):
+        error_if_item_not_found(equipment_id)
+        equipment_record = data['equipment'][equipment_id]
+        update = update_equipitem_parser.parse_args()
+        equipment_record['description'] = update['description']
+        equipment_record['accessories'] = update['accessories']
+        return make_response(
+            render_equipitem_as_html(equipment_record), 200)
+
+
+# Define a resource for getting a JSON representation of a help request.
+# TODO
+class HelpRequestAsJSON(Resource):
+
+    # If a help request with the specified ID does not exist,
+    # respond with a 404, otherwise respond with a JSON representation.
+    def get(self, helprequest_id):
+        error_if_item_not_found(helprequest_id)
+        helprequest = data['helprequests'][helprequest_id]
+        helprequest['@context'] = data['@context']
+        return helprequest
+
 
 ###########################################################
 ##                RESERVATIONS : Parsers                 ##
@@ -245,13 +258,13 @@ class ReservationList(Resource):
 
     # Add a new help request to the list, and respond with an HTML
     # representation of the updated list.
-    # TODO
     def post(self):
-        reservation = new_reservation_parser.parse_args()
+        reservation_record = new_reservation_parser.parse_args()
         reservation_id = generate_id()
-        reservation['@id'] = 'reservation/' + reservation_id
-        reservation['@type'] = 'helpdesk:EquipmentReservation'
-        data['reservations'][reservation_id] = reservation
+        reservation_record['@id'] = 'reservation/' + reservation_id
+        reservation_record['@type'] = 'helpdesk:EquipmentReservation'
+        reservation_record['modifiedTime'] = datetime.now()
+        data['reservations'][reservation_id] = reservation_record
         return make_response(
             render_reservation_list_as_html(
                 data['reservations'], data['equipment']), 201)
@@ -279,13 +292,20 @@ class Reservation(Resource):
     # with the updated HTML representation.
     def patch(self, reservation_id):
         error_if_reservation_not_found(reservation_id)
-        reservation = data['reservations'][reservation_id]
+        reservation_record = data['reservations'][reservation_id]
+        reservation_record['modifiedTime'] = datetime.now()
         update = update_reservation_parser.parse_args()
-        reservation['startDate'] = update['startDate']
-        reservation['endDate'] = update['endDate']
+        reservation_record['startDate'] = update['startDate']
+        reservation_record['endDate'] = update['endDate']
         return make_response(
-            render_reservation_as_html(reservation,
-                data['equipment'][reservation['requestedItem']]), 200)
+            render_reservation_as_html(reservation_record,
+                data['equipment'][reservation_record['requestedItem']]), 200)
+
+
+
+###########################################################
+##                FLASK : URL Paths, &c.                 ##
+###########################################################
 
 # Assign URL paths to our resources.
 app = Flask(__name__)

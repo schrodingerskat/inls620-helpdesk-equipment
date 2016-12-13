@@ -22,16 +22,19 @@
      - Who reserved it
  -->
 <form class="edit_reservation"  method="patch">
-    <p><label>Item:</label>
+    <p><label>Item</label>
         <span><a href="/equipment/{{ reservation.requestedItem }}" rel="reservedItem">{{ item.name }}</a></span>
     </p>
-    <p><label>Reserved for:</label>
+    <p><label>Reserved for</label>
         <span>{{ reservation.requestedBy }}</span>
     </p>
-    <p><label>Start Date:</label>
+    <p><label>Reservation Updated</label>
+        <span>{{ reservation.modifiedTime.strftime("%b %d, %Y @ %H:%M") }}</span>
+    </p>
+    <p><label>Start Date</label>
         <input name="startDate" type="date" value="{{ reservation.startDate }}" required>
     </p>
-    <p><label>End Date:</label>
+    <p><label>End Date</label>
         <input name="endDate" type="date" value="{{ reservation.endDate }}">
     </p>
     <p><input class="edit" type="submit" value="Update Reservation"></p>
