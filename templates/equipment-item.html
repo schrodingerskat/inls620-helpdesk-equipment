@@ -13,8 +13,8 @@
     </ul>
 </nav>
 
-<main>
-<h1>{{ item.name }}</h1>
+<main itemscope itemtype="https://schema.org/IndividualProduct/EquipmentItem">
+<h1 itemprop="name">{{ item.name }}</h1>
 <!-- An equipment record needs:
      - Library information (barcode, name, replacement cost)
      - List of kit accessories
@@ -23,13 +23,15 @@
 -->
 <form class="edit_equipment" method="patch">
     <p><label>Barcode:</label>
-        <span>{{ item.barcode }}</span>
+        <span itemprop="serialNumber">{{ item.barcode }}</span>
     </p>
-    <p><label>Replacement Cost:</label>
-        <span>{{ item.replacementCost[0].price }}</span>
+    <p itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+        <label>Replacement Cost:</label>
+        <span itemprop="price">{{ item.replacementCost[0].price }}</span>
     </p>
     <p><label>Description:</label><br>
         <textarea name="description" rows="3">{{ item.description }}</textarea>
+        <span itemprop="description">{{ item.description }}</span>
     </p>
     <p><label>Kit Contents:</label>
         <ul style="list-style:none;">
@@ -38,6 +40,7 @@
             {% endfor %}
             <li><input name="accessories" type="text" placeholder="Add New Accessory" size="40"></input></li>
         </ul>
+        <span itemprop="isRelatedTo">{{ item.accessories }}</span>
     </p>
     <p><input class="edit" type="submit" value="Update Equipment"></p>
     <script>
@@ -67,7 +70,6 @@
     <p><input type="submit" value="Please may I have it?"></p>
 </form>
 
-<p><a href="/calendar?search_item={{ item.barcode }}" rel="reserve">View Reservations</a></p>
 </main>
 
 </body>

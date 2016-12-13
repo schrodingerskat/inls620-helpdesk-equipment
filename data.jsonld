@@ -1,6 +1,6 @@
 {
     "@context": {
-        "helpdesk": "url-here/vocab.ttl#",
+        "helpdesk": "https://raw.githubusercontent.com/schrodingerskat/inls620-helpdesk-equipment/master/vocab.ttl#",
         "equipment":
         { "@id": "https://www.w3.org/2000/01/rdf-schema#member",
           "@container": "@index"
@@ -9,11 +9,14 @@
         { "@id": "https://www.w3.org/2000/01/rdf-schema#member",
           "@container": "@index"
         },
+        "name": "https://schema.org/name",
         "barcode": "https://schema.org/serialNumber",
         "replacementCost": {
             "@id": "https://schema.org/offers",
             "@type": "https://schema.org/Offer"
         },
+        "description": "https://schema.org/description",
+        "accessories": "https://schema.org/isRelatedTo",
         "price": {
             "@id": "https://schema.org/price",
             "@type": "https://www.w3.org/2001/XMLSchema#float"

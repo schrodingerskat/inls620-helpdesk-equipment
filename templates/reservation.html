@@ -3,6 +3,7 @@
 <head>
     <title>{{ item.name }} Reservation -- Checkout Equipment System</title>
     <link rel="stylesheet" href="/styles/style.css">
+    <link rel="alternate" href="{{ request.path }}.json">
 </head>
 <body>
 
@@ -13,7 +14,7 @@
     </ul>
 </nav>
 
-<main>
+<main itemscope itemtype="https://schema.org/Reservation/EquipmentReservation">
 <h1> {{ item.name }} Reservation: {{ reservation.startDate.strftime("%b %d, %Y") }}</h1>
 <!-- A reservation needs:
      - Start Date
@@ -23,19 +24,21 @@
  -->
 <form class="edit_reservation"  method="patch">
     <p><label>Item</label>
-        <span><a href="/equipment/{{ reservation.requestedItem }}" rel="reservedItem">{{ item.name }}</a></span>
+        <span><a itemprop="reservationFor" href="/equipment/{{ reservation.requestedItem }}" rel="reservedItem">{{ item.name }}</a></span>
     </p>
     <p><label>Reserved for</label>
-        <span>{{ reservation.requestedBy }}</span>
+        <span itemprop="underName">{{ reservation.requestedBy }}</span>
     </p>
     <p><label>Reservation Updated</label>
-        <span>{{ reservation.modifiedTime.strftime("%b %d, %Y @ %H:%M") }}</span>
+        <span itemprop="modifiedTime">{{ reservation.modifiedTime.strftime("%b %d, %Y @ %H:%M") }}</span>
     </p>
     <p><label>Start Date</label>
         <input name="startDate" type="date" value="{{ reservation.startDate }}" required>
+        <span itemprop="startDate" style="display:none;">{{ reservation.startDate }}</span>
     </p>
     <p><label>End Date</label>
         <input name="endDate" type="date" value="{{ reservation.endDate }}">
+        <span itemprop="endDate" style="display:none;">{{ reservation.endDate }}</span>
     </p>
     <p><input class="edit" type="submit" value="Update Reservation"></p>
     <script>
@@ -60,5 +63,8 @@
 <p>Want to use this item? Create a new reservation through our <a href="/reservations" rel="collection">Reservation Calendar</a>.</p>
 </main>
 
+<footer>
+    <a rel="alternate" href="{{ request.path }}.json">View Reservation as JSON-LD</a>
+</footer>
 </body>
 </html>

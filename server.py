@@ -169,11 +169,17 @@ class EquipmentList(Resource):
                 data['equipment']), 201)
 
 
-# Define a resource for getting a JSON representation of the help request list.
-# TODO
-class HelpRequestListAsJSON(Resource):
+# Define a resource for getting a JSON representation of the equipment list.
+class EquipmentListAsJSON(Resource):
     def get(self):
-        return data
+        json_data = {}
+        json_data['equipment'] = data['equipment']
+        json_data['@context'] = {}
+        for key in ['helpdesk', 'equipment', 'name', 'barcode',
+                    'replacementCost', 'description', 'accessories',
+                    'price']:
+            json_data['@context'][key] = data['@context'][key]
+        return json_data
 
 
 ###########################################################
@@ -246,6 +252,13 @@ update_reservation_parser.add_argument(
 ###########################################################
 ##             RESERVATIONS : Full Calendar              ##
 ###########################################################
+def serialize(reservation_list):
+    for record in reservation_list:
+        for attr in record:
+            if isinstance(attr, datetime):
+                reservation_list[record][attr] = attr.isoformat()
+
+    return reservation_list
 
 # Define our help request list resource.
 class ReservationList(Resource):
@@ -269,6 +282,15 @@ class ReservationList(Resource):
             render_reservation_list_as_html(
                 data['reservations'], data['equipment']), 201)
 
+# Define a resource for getting a JSON representation of the reservation list.
+class ReservationListAsJSON(Resource):
+    def get(self):
+        json_data = {}
+        json_data['reservations'] = serialize(data['reservations'])
+        json_data['@context'] = {}
+        for key in ['helpdesk', 'reservations', 'requestedBy', 'requestedItem']:
+            json_data['@context'][key] = data['@context'][key]
+        return json_data
 
 
 ###########################################################
@@ -311,10 +333,12 @@ class Reservation(Resource):
 app = Flask(__name__)
 api = Api(app)
 api.add_resource(EquipmentList, '/equipment')
-api.add_resource(HelpRequestListAsJSON, '/requests.json')
+api.add_resource(EquipmentListAsJSON, '/equipment.json')
 api.add_resource(EquipmentItem, '/equipment/<string:equipment_id>')
 api.add_resource(HelpRequestAsJSON, '/request/<string:helprequest_id>.json')
+
 api.add_resource(ReservationList, '/reservations')
+api.add_resource(ReservationListAsJSON, '/reservations.json')
 api.add_resource(Reservation, '/reservation/<string:reservation_id>')
 
 

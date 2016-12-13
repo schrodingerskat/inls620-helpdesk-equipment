@@ -21,20 +21,19 @@
 -->
 
 <h2>Reservations</h2>
-<form class="search" method="get">
-    <p>Enter an item and/or a date to search for existing reservations, or view the full list below.</p>
-    <label>Item (name or barcode): <input name="search_item" type="text"></label>
-    <label>Date: <input name="search_date" type="date"></label><br>
-    <input type="submit" value="Search Reservations">
-</form>
-<!-- The actual implementation would filter this list based on the search_item
-     and search_date parameters, if they're present.
- -->
 <ul>
     {% for reservation_id, reservation in reservations.items() %}
-    <li class="reservation">
+    <li class="reservation" itemscope
+        itemid="{{ url_for('reservation', reservation_id=reservation_id, _external=True) }}"
+        itemtype="https://schema.org/Reservation/EquipmentReservation">
         <a href="{{ url_for('reservation', reservation_id=reservation_id) }}"
-        rel="item">{{ reservation.startDate.strftime("%b %d, %Y") }}: {{ equipment[reservation.requestedItem].name }} ({{ reservation.requestedBy }})</a></li>
+            rel="item"
+            itemprop="reservationFor">
+            <span itemprop="startDate">{{ reservation.startDate.strftime("%b %d, %Y") }}</span>:
+            {{ equipment[reservation.requestedItem].name }}
+            (<span itemprop="underName">{{ reservation.requestedBy }}</span>)
+        </a>
+    </li>
     {% endfor %}
 </ul>
 

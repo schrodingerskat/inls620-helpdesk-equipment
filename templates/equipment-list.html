@@ -3,6 +3,7 @@
 <head>
     <title>Checkout Equipment</title>
     <link rel="stylesheet" href="styles/style.css">
+    <link rel="alternate" href="{{ request.path }}.json">
 </head>
 <body>
 
@@ -30,7 +31,13 @@
  -->
 <ul>
     {% for item_id, item in equipment %}
-    <li class="equipment"><a href="{{ url_for('equipmentitem', equipment_id=item_id) }}" rel="item">{{ item.name }}</a></li>
+    <li class="equipment" itemscope
+        itemid="{{ url_for('equipmentitem', equipment_id=item_id, _external=True) }}"
+        itemtype="https://schema.org/IndividualProduct/EquipmentItem">
+        <a href="{{ url_for('equipmentitem', equipment_id=item_id) }}" rel="item">
+            <span itemprop="name">{{ item.name }}</span>
+        </a>
+    </li>
     {% endfor %}
 </ul>
 
@@ -44,5 +51,8 @@
 </form>
 </main>
 
+<footer>
+    <a rel="alternate" href="{{ request.path }}.json">View Equipment List as JSON-LD</a>
+</footer>
 </body>
 </html>

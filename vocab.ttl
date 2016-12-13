@@ -1,4 +1,4 @@
-@base <url-here/vocab.ttl#> .
+@base <https://raw.githubusercontent.com/schrodingerskat/inls620-helpdesk-equipment/master/vocab.ttl#> .
 @schema <https://schema.org/> .
 
 <EquipmentItem>
