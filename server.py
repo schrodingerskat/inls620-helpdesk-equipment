@@ -52,18 +52,15 @@ def filter_and_sort_equipment(query='', sort_by='time'):
     return sorted(filtered_helprequests, key=get_sort_value, reverse=True)
 
 
-# Given the data for a help request, generate an HTML representation
-# of that help request.
-# TODO: Edit for my application
+# Given the data for an equipment record, generate an HTML representation.
 def render_equipitem_as_html(equipment_record):
     return render_template(
         'equipment-item.html',
         item=equipment_record)
 
 
-# Given the data for a list of help requests, generate an HTML representation
+# Given the data for a list of equipment, generate an HTML representation
 # of that list.
-# TODO: edit for my application
 def render_equipment_list_as_html(equipment):
     return render_template(
         'equipment-list.html',
@@ -90,13 +87,19 @@ for arg in ['name', 'barcode']:
     new_equipitem_parser.add_argument(
         arg, type=nonempty_string, required=True,
         help="'{}' is a required value".format(arg))
+new_equipitem_parser.add_argument(
+    'replacementCost', type=float, default='0.00'
+)
+new_equipitem_parser.add_argument(
+    'description', type=str, default=''
+)
 
 
 # Specify the data necessary to update an existing item record.
 # Only the description and accessories can be updated.
 update_equipitem_parser = reqparse.RequestParser()
 update_equipitem_parser.add_argument(
-    'accessories', type=str, default='')
+    'accessories', type=str, default='', action='append')
 update_equipitem_parser.add_argument(
     'description', type=str, default='')
 
@@ -119,8 +122,7 @@ class EquipmentItem(Resource):
         equipment_record = data['equipment'][equipment_id]
         update = update_equipitem_parser.parse_args()
         equipment_record['description'] = update['description']
-        if len(update['accessories'].strip()) > 0:
-            equipment_record.setdefault('accessories', []).append(update['accessories'])
+        equipment_record['accessories'] = update['accessories']
         return make_response(
             render_equipitem_as_html(equipment_record), 200)
 
@@ -155,6 +157,8 @@ class EquipmentList(Resource):
         equipment_id = generate_id()
         equipment_record['@id'] = 'request/' + equipment_id
         equipment_record['@type'] = 'helpdesk:EquipmentItem'
+        equipment_record['replacementCost'] = \
+            [{"price": equipment_record['replacementCost']}]
         data['equipment'][equipment_id] = equipment_record
         return make_response(
             render_equipment_list_as_html(

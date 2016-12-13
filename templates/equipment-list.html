@@ -8,8 +8,8 @@
 
 <nav>
     <ul>
-        <li><a href="equipment-collection.html" rel="self">All Equipment</a></li>
-        <li><a href="calendar.html" rel="related">Reservation Calendar</a></li>
+        <li><a href="/equipment" rel="self">All Equipment</a></li>
+        <li><a href="/reservations" rel="related">Reservation Calendar</a></li>
     </ul>
 </nav>
 
@@ -38,7 +38,7 @@
 <form class="edit_equipment" method="post">
     <label>Item Name: <input name="name" type="text" required></label><br>
     <label>Barcode: <input name="barcode" type="number" required></label><br>
-    <label>Replacement Cost: <input name="cost" type="number" step="0.01" min="0"></label><br>
+    <label>Replacement Cost: <input name="replacementCost" type="number" step="0.01" min="0"></label><br>
     <label>Description:<br><textarea name="description"></textarea></label><br>
     <input type="submit" value="Add Item">
 </form>

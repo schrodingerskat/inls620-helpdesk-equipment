@@ -21,19 +21,36 @@
      - Link to reservations for that item
      - Form to add a new reservation
 -->
-<form class="edit_equipment" method="put">
+<form class="edit_equipment" method="patch">
     <p><label>Barcode: {{ item.barcode }}</label></p>
     <p><label>Replacement Cost: {{ item.replacementCost[0].price }}</label></p>
     <p><label>Description: <br><textarea name="description" rows="3" cols="50">{{ item.description }}</textarea></label></p>
     <p><label>Kit Contents:
         <ul style="list-style:none;">
             {% for accessory in item.accessories %}
-            <li><input name="accessories[]" type="text" value="{{ accessory }}" size="40"></input></li>
+            <li><input name="accessories" type="text" value="{{ accessory }}" size="40"></input></li>
             {% endfor %}
-            <li><input name="accessories[]" type="text" placeholder="Add New Accessory" size="40"></input></li>
+            <li><input name="accessories" type="text" placeholder="Add New Accessory" size="40"></input></li>
         </ul>
     </label></p>
     <input class="edit" type="submit" value="Update Equipment">
+    <script>
+    var form = document.querySelector('form.edit_equipment');
+    var button = document.querySelector('form.edit_equipment input.edit');
+
+    button.addEventListener('click', function (event) {
+        event.preventDefault();
+        var request = new XMLHttpRequest();
+        request.open('PATCH', window.location.pathname);
+        request.onreadystatechange = function () {
+            if (XMLHttpRequest.DONE === request.readyState
+                && 200 === request.status) {
+                    window.location.reload(true);
+            }
+        }
+        request.send(new FormData(form));
+    }, false);
+    </script>
 </form>
 
 <h2>Reserve This Item</h2>
