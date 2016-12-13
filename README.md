@@ -15,6 +15,7 @@
 * **collection**: Target is this resource's parent collection (equipment -> equipment collection; reservation -> calendar)
 * **item**: Target is an item in this collection (equipment collection -> equipment; calendar -> reservation)
 * **related**: Target is a related resource that does not fall under another relation
+
 #### Custom Relations
 * **reserve**: Target is a reservation for the current item
 * **reservedItem**: Target is the equipment item requested in the current reservation
