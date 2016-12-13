@@ -1,5 +1,12 @@
 # inls620-helpdesk-equipment
-[INLS 620 Final Project]
+This application provides a basic interface for reserving help desk equipment. It currently supports:
+
+* Adding new equipment to the collection
+* Creating new reservations for existing equipment
+* Updating equipment records and reservations
+* Searching for equipment records
+
+See the issue tracker for known issues and desired improvements.
 
 ## Application Flow Attributes
 ### Classes
