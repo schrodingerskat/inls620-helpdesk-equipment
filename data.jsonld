@@ -21,8 +21,8 @@
             "@id": "https://schema.org/price",
             "@type": "https://www.w3.org/2001/XMLSchema#float"
         },
-        "requestedBy": "https://www.schema.org/underName",
-        "requestedItem": "https://www.schema.org/reservationFor"
+        "requestedBy": "https://schema.org/underName",
+        "requestedItem": "https://schema.org/reservationFor"
     },
     "@id": "equipment-reservations",
     "equipment": {
@@ -47,7 +47,7 @@
     },
     "reservations": {
         "9a0elq": {
-            "@type": "https://www.schema.org/Reservation",
+            "@type": "helpdesk:EquipmentReservation",
             "@id": "reservation/9a0elq",
             "requestedBy": "kshaw@email.unc.edu",
             "requestedItem": "f093a8",
