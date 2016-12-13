@@ -335,10 +335,8 @@ api = Api(app)
 api.add_resource(EquipmentList, '/equipment')
 api.add_resource(EquipmentListAsJSON, '/equipment.json')
 api.add_resource(EquipmentItem, '/equipment/<string:equipment_id>')
-api.add_resource(HelpRequestAsJSON, '/request/<string:helprequest_id>.json')
 
 api.add_resource(ReservationList, '/reservations')
-api.add_resource(ReservationListAsJSON, '/reservations.json')
 api.add_resource(Reservation, '/reservation/<string:reservation_id>')
 
 
