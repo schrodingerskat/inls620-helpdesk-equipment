@@ -64,10 +64,17 @@
 
 <h2>Reserve This Item</h2>
 <form class="edit_reservation" action="/reservations" method="post">
-    <input name="item" type="hidden" value="{{ item.barcode }}">
-    <p><label>Start Date: <input name="start" type="date" required></label></p>
-    <p><label>End Date: <input name="end" type="date"></label></p>
-    <p><input type="submit" value="Please may I have it?"></p>
+    <input name="requestedItem" type="hidden" value="{{ item['@id'].split('/')[1] }}">
+    <p><label>Email</label>
+        <input name="requestedBy" type="email" required placeholder="email@example.com">
+    </p>
+    <p><label>Start Date</label>
+        <input name="startDate" type="date" required>
+    </p>
+    <p><label>End Date</label>
+        <input name="endDate" type="date" required>
+    </p>
+    <p><input type="submit" value="Request Reservation"></p>
 </form>
 
 </main>

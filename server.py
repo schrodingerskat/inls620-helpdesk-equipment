@@ -159,7 +159,7 @@ class EquipmentList(Resource):
     def post(self):
         equipment_record = new_equipitem_parser.parse_args()
         equipment_id = generate_id()
-        equipment_record['@id'] = 'request/' + equipment_id
+        equipment_record['@id'] = 'equipment/' + equipment_id
         equipment_record['@type'] = 'helpdesk:EquipmentItem'
         equipment_record['replacementCost'] = \
             [{"price": equipment_record['replacementCost']}]
