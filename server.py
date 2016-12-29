@@ -39,13 +39,13 @@ def generate_id(size=6, chars=string.ascii_lowercase + string.digits):
 # Respond with 404 Not Found if no equipment item with the specified ID exists.
 def error_if_item_not_found(equipment_id):
     if equipment_id not in data['equipment']:
-        message = "No help request with ID: {}".format(equipment_id)
+        message = "No equipment with ID: {}".format(equipment_id)
         abort(404, message=message)
 
 # Respond with 404 Not Found if no reservation with the specified ID exists.
 def error_if_reservation_not_found(reservation_id):
     if reservation_id not in data['reservations']:
-        message = "No help request with ID: {}".format(reservation_id)
+        message = "No reservation with ID: {}".format(reservation_id)
         abort(404, message=message)
 
 
